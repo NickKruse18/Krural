@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+
 double KNX[1000000] = {};
 int KNn = 0;
 int KNk = 0;
@@ -12,8 +13,9 @@ void InitializeKrural(NumericVector X, int n, int k){
 
 // [[Rcpp::export]]
 NumericVector TopCalc(NumericVector B){
-  double a = 0;  int I = 0;
+  double a = 0;  int I = 0;  double sign = (B[0] > 0) - (B[0] < 0);
   NumericVector z (KNn);
+  B[0] *= sign;  B[1] *= sign;
   for(int i = 0; i < KNn; i++){
     a = B[1];  I = i;
     for(int j = 0; j < KNk; j++){
@@ -21,7 +23,7 @@ NumericVector TopCalc(NumericVector B){
       if(a <= 0){ a = 0;  break; }
       I += KNn;
     }
-    z[i] = a;
+    z[i] = sign * a;
   }
   return z;
 }
